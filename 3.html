@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+  <title>.</title>
+  <link href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.2.1/tcplayer.min.css" rel="stylesheet">
+  <script src="https://web.sdk.qcloud.com/player/tcplayer/release/v4.2.1/libs/hls.min.0.13.2m.js"></script>
+  <script src="https://web.sdk.qcloud.com/player/tcplayer/release/v4.5.0/tcplayer.v4.5.0.min.js"></script>
+  <script src="https://note.youdao.com/yws/api/personal/file//2ADA0E141C9D415FBACE00D34867D2CB?method=download&inline=true&shareKey=c2d5c4473000f1a7c1008e35f3edccaa&laye.mim.css"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .video-block {
+      margin-bottom: 40px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 20px;
+    }
+    .video-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: block;
+      background-color: lightskyblue;
+      padding: 5px;
+    }
+    .tcplayer-container {
+      margin: 0 auto;
+      width: 1080px;
+      height: 600px;
+      max-width: 100%;
+      display: none;
+    }
+    .jump-btn {
+      display: none;
+      margin: 10px auto;
+      padding: 8px 16px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: orange;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      width: auto;
+      min-width: 200px;
+      text-align: center;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">加载中...</div>
+  <script>
+    const players = [];
+    let currentPlayingIndex = null;
+
+    function getLocalData() {
+      return {
+        data_mp4: [
+         { title: "吃🍉#黑丝 #丝袜 俱乐部 （什么味）", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/1.36.169.22/1749027749590985419/5d693d6e8ef80b7b5da09fa005c49f24/1.mp4" },
+          { title: "吃🍉哪位群友，又把女朋友乱扔", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/1.36.169.22/1749027749718328739/dc8a180428bdf0584cd2dba4dfde7ea3/2.mp4" },
+          { title: "吃🍉陕西某大学户外 女朋友吃🐔 ", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/1.36.169.22/1749027756246561967/379ad8e63b016ba51e303cf8ee7043a8/3.mp4" },
+          { title: "吃🍉纹身大姐大休闲时刻", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/1.36.169.22/1749027753208031119/2944e4f056c0c7582c63bea030e706b6/4.mp4" },
+          { title: "吃🍉几个人打自己老公，老婆还抱着自己老公让别人打😂", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/1.36.169.22/1749027765586853309/07efaf7ffe98a1bd265573728594973c/5.mp4" },
+          { title: "吃🍉年轻人 倒头就睡/*打架", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/1.36.169.22/1749027772005780263/5676e17029fd995665f3a263f755fd9f/6.mp4" },
+          { title: "吃🍉喝成啥样了 #醉酒 🥴黑丝",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/1.36.169.22/1749027776923191803/0773b3bc843ffa0dea78a8b61d91c124/7.mp4" },
+          { title: "吃🍉完啦。跳偏了😱/*跳楼", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/1.36.169.22/1749027774380746768/7a363bf9607c7f0c7104c6da9daac8bf/8.mp4" },
+          { title: "吃🍉反差新娘，走光露点啦，", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/1.36.169.22/1749027775384420023/3e916ee1cc5f3279416260a4e5eaf023/9.mp4" },
+          { title: "吃🍉老年 #顶友 😑达叔",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/1.36.169.22/1749027779276162262/2c778140a76e97aa7787894fee2331c6/10.mp4" },
+          { title: "吃🍉我打不过你，我还打不过你狗吗？ #狗子 主人 #打架",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/1.36.169.22/1749027779628019006/7a3d06e49f57dadb97820c136c040ac8/11.mp4" },
+        ],
+        btn_text: '加入吃瓜微信群',
+        btn_link: 'https://coscdn.myjujing.com/cvd/customer/fileUploadv2/121.33.131.131/1748934101725490259/b4315636d665b73403bc04386d56a5f7/ea13c298d5e4d0a7a9e3bdda6040d8f.jpg',
+        title: '6.3吃瓜合集'
+      };
+    }
+
+    async function loadVideos() {
+      const data = getLocalData();
+
+      document.title = data.title;
+      const container = document.getElementById('content');
+      container.innerHTML = '';
+
+      data.data_mp4.forEach((item, index) => {
+        const videoId = "tcplayer-container-" + index;
+        const block = document.createElement('div');
+        block.className = 'video-block';
+        block.innerHTML = `
+          <span class="video-title" data-index="${index}">${index + 1}. ${item.title}</span>
+          <video id="${videoId}" class="tcplayer-container" preload="auto" playsinline webkit-playsinline></video>
+          <button class="jump-btn">${data.btn_text}</button>
+        `;
+        container.appendChild(block);
+
+        const jumpBtn = block.querySelector('.jump-btn');
+        jumpBtn.onclick = () => window.location.href = data.btn_link;
+
+        setTimeout(() => {
+          const player = TCPlayer(videoId, { reportable: false });
+          player.src(item.url);
+          player.pause();
+          players[index] = player;
+        }, 0);
+      });
+
+      const titleElems = document.querySelectorAll('.video-title');
+      titleElems.forEach(titleElem => {
+        titleElem.addEventListener('click', function () {
+          const index = parseInt(this.getAttribute('data-index'));
+          if (currentPlayingIndex === index) return;
+
+          if (currentPlayingIndex !== null) {
+            const prevVideoElem = document.getElementById("tcplayer-container-" + currentPlayingIndex);
+            if (prevVideoElem) prevVideoElem.style.display = 'none';
+
+            const prevBlock = prevVideoElem ? prevVideoElem.parentElement : null;
+            if (prevBlock) {
+              const prevBtn = prevBlock.querySelector('.jump-btn');
+              if (prevBtn) prevBtn.style.display = 'none';
+            }
+
+            if (players[currentPlayingIndex]) {
+              players[currentPlayingIndex].pause();
+            }
+          }
+
+          const currentVideoElem = document.getElementById("tcplayer-container-" + index);
+          if (currentVideoElem) currentVideoElem.style.display = 'block';
+
+          const currentBlock = this.parentElement;
+          currentBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+          const jumpBtn = currentBlock.querySelector('.jump-btn');
+          if (jumpBtn) jumpBtn.style.display = 'block';
+
+          if (players[index]) players[index].play();
+          currentPlayingIndex = index;
+        });
+      });
+    }
+
+    async function init() {
+      await loadVideos();
+    }
+
+    init();
+  </script>
+</body>
+</html>
